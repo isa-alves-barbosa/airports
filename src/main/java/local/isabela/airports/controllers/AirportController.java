@@ -69,4 +69,18 @@ public ResponseEntity<List<AirportMinDTO>> findByCountryIgnoreCase(@PathVariable
         return ResponseEntity.ok(result);
     }
 }
+@GetMapping("/iatacode/{iataCode}")
+public ResponseEntity<Airport> findByIataCode(@PathVariable String iataCode){
+    Airport result = airportService.findByiataCode(iataCode);
+    
+    if (result == null){
+        //Ops...Aeroporto vazio...
+        //notFound devolve 404
+        return ResponseEntity.notFound().build();
+    }else{
+        //Eba ! Tem dados!
+        //ok devolve 200
+        return ResponseEntity.ok(result);
+    }
+}
 }
