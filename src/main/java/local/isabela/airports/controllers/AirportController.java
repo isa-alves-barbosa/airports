@@ -1,6 +1,7 @@
 package local.isabela.airports.controllers;
 
 import java.util.List;
+import local.isabela.airports.DTO.AirportMinDTO;
 import local.isabela.airports.entities.Airport;
 import local.isabela.airports.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,18 @@ if (result.isEmpty()) {
 
 }
 
+}
+@GetMapping("/country/{countryName}")
+public ResponseEntity<List<AirportMinDTO>> findByCountryIgnoreCase(@PathVariable String countryName){
+    List<AirportMinDTO>result = airportService.findByCountry(countryName);
+    if (result.isEmpty()){
+        //Ops..lista vazia...
+        //notFound devolve 404
+        return ResponseEntity.notFound().build();
+    }else{
+        //Eba !Tem dados!
+        //ok devolve 200
+        return ResponseEntity.ok(result);
+    }
 }
 }
