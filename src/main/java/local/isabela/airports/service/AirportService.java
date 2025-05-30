@@ -3,6 +3,8 @@ package local.isabela.airports.service;
 import local.isabela.airports.repositories.AirportRepository;
 import java.util.List;
 import local.isabela.airports.DTO.AirportMinDTO;
+import local.isabela.airports.DTO.AirportNearMeDTO;
+import local.isabela.airports.DTO.AirportNearMeProjection;
 import local.isabela.airports.entities.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,19 @@ public class AirportService {
   public Airport findByiataCode(String iataCode){
       Airport result = airportRepository.findByIataCode(iataCode);
       return result;
+  }
+  /**
+   * @param latitude 
+   * @param longitude
+   * @return
+   */
+  
+  public List< AirportNearMeDTO> findNearMe (double latitude , double longitude ){
+      List<AirportNearMeProjection> resultNearAirports = airportRepository.findNearMe (latitude, longitude);
+      
+      List<AirportNearMeDTO> resultDTO = resultNearAirports.stream()
+              .map(x-> new AirportNearMeDTO(x)).toList();
+      return resultDTO;
   }
   }
 

@@ -2,12 +2,14 @@ package local.isabela.airports.controllers;
 
 import java.util.List;
 import local.isabela.airports.DTO.AirportMinDTO;
+import local.isabela.airports.DTO.AirportNearMeDTO;
 import local.isabela.airports.entities.Airport;
 import local.isabela.airports.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -82,5 +84,21 @@ public ResponseEntity<Airport> findByIataCode(@PathVariable String iataCode){
         //ok devolve 200
         return ResponseEntity.ok(result);
     }
+}
+@GetMapping("/nearme")
+public ResponseEntity<List<AirportNearMeDTO>> findNearMe(
+     @RequestParam double latitude,
+     @RequestParam double longitude){
+    
+    List<AirportNearMeDTO> result = airportService.findNearMe(latitude, longitude);
+    if (result.isEmpty()){
+        //Ops...Lista vazia...
+        //notFound devolve 404
+        return ResponseEntity.notFound().build();
+    }else{
+        //Eba ! Tem dados!
+        //ok devolve 200
+        return ResponseEntity.ok(result);
+}
 }
 }
